@@ -23,9 +23,17 @@ class Program
 
             if (input.ToUpper().StartsWith("EVENT;"))
             {
-                Event newEvent = new Event(input);
-                listEvents.Add(newEvent);
-                Console.WriteLine("The event was added.");
+                try
+                {
+                    Event newEvent = new Event(input);
+                    listEvents.Add(newEvent);
+                    Console.WriteLine("The event was added.");
+                }
+                catch (ArgumentException exception)
+                {
+
+                    Console.WriteLine($"Error: {exception.Message}");
+                }
             }
             else
             {

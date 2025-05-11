@@ -15,11 +15,18 @@ namespace ConsoleEventPlanner
         {
             string[] parts = input.Split(";");
 
-            if (parts.Length == 3)
+            if (parts.Length != 3)
             {
-                Title = parts[1].Trim();
-                Date = DateTime.Parse(parts[2]);
+                throw new ArgumentException("Invalid event format. Expected: EVENT;event name;YYYY-MM-DD.");
             }
+
+            Title = parts[1].Trim();
+
+            if (!DateTime.TryParse(parts[2], out DateTime parsedDate))
+            {
+                throw new ArgumentException("Invalid date format. Please use YYYY-MM-DD.");
+            }
+            Date = parsedDate;
         }
 
         public string getTitle()
