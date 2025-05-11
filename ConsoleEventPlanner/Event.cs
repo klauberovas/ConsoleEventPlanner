@@ -1,42 +1,26 @@
-using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace ConsoleEventPlanner
 {
     public class Event
     {
-        private string Title { get; set; }
-        private DateTime Date { get; set; }
+        public string Title { get; }
+        public DateTime Date { get; }
 
         public Event(string input)
         {
-            string[] parts = input.Split(";");
+            string[] parts = input.Split(";", StringSplitOptions.TrimEntries);
 
             if (parts.Length != 3)
             {
                 throw new ArgumentException("Invalid event format. Expected: EVENT;event name;YYYY-MM-DD.");
             }
 
-            Title = parts[1].Trim();
+            Title = parts[1];
 
             if (!DateTime.TryParse(parts[2], out DateTime parsedDate))
             {
                 throw new ArgumentException("Invalid date format. Please use YYYY-MM-DD.");
             }
             Date = parsedDate;
-        }
-
-        public string GetTitle()
-        {
-            return Title;
-        }
-
-        public DateTime GetDate()
-        {
-            return Date;
         }
     }
 }

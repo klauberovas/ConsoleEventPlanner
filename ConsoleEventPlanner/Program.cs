@@ -6,14 +6,19 @@ class Program
 {
     static void Main(string[] args)
     {
-        List<Event> listEvents = new List<Event>(){
+        var events = new List<Event>(){
             new Event("EVENT;Birthday Party;2025-07-15"),
             new Event("EVENT;Czechitas Party;2025-07-15"),
             new Event("EVENT;Conference;2025-06-01"),
             new Event("EVENT;Wedding;2025-09-10")
         };
 
-        Dictionary<DateTime, int> dictionaryStats = new Dictionary<DateTime, int>();
+        var stats = new Dictionary<DateTime, int>();
+
+        foreach (var ev in events)
+        {
+            AddToStats(stats, ev);
+        }
 
         while (true)
         {
@@ -24,6 +29,7 @@ class Program
             Console.WriteLine("  STATS  - shows event statistics by date");
             Console.WriteLine("  END    - exits the program");
             Console.WriteLine("===========================================");
+
             string input = Console.ReadLine().Trim();
 
             if (input.ToUpper().StartsWith("EVENT;"))
@@ -31,13 +37,14 @@ class Program
                 try
                 {
                     Event newEvent = new Event(input);
-                    listEvents.Add(newEvent);
-                    Console.WriteLine("The event was added.");
+                    events.Add(newEvent);
+                    AddToStats(stats, newEvent);
+                    Console.WriteLine("Event added.");
                 }
-                catch (ArgumentException exception)
+                catch (ArgumentException ex)
                 {
 
-                    Console.WriteLine($"Error: {exception.Message}");
+                    Console.WriteLine($"Error: {ex.Message}");
                 }
             }
             else
@@ -45,11 +52,12 @@ class Program
                 switch (input.ToUpper())
                 {
                     case "LIST":
-                        ShowListEvents(listEvents);
+                        ShowEvents(events);
                         break;
 
                     case "STATS":
-                        DisplayEventStatistics(listEvents);
+                        ShowStats(stats);
+                        // ShowStatsAlt(events);
                         break;
 
                     case "END":
@@ -60,28 +68,42 @@ class Program
                         break;
                 }
             }
-
         }
     }
-    public static void ShowListEvents(List<Event> listEvents)
-    {
-        DateTime actualDate = DateTime.Now;
 
-        foreach (var e in listEvents.OrderBy(ev => ev.GetDate()))
+    private static void AddToStats(Dictionary<DateTime, int> stats, Event ev)
+    {
+        var date = ev.Date;
+        stats[date] = stats.TryGetValue(date, out int count) ? count + 1 : 1;
+    }
+
+    private static void ShowEvents(List<Event> listEvents)
+    {
+        DateTime today = DateTime.Now;
+
+        foreach (var e in listEvents.OrderBy(ev => ev.Date))
         {
-            double remaining = (e.GetDate() - actualDate).Days;
-            if (remaining >= 0)
+            int daysLeft = (e.Date - today).Days;
+            if (daysLeft >= 0)
             {
-                Console.WriteLine($"Event {e.GetTitle()} with date {e.GetDate().ToString("yyyy-MM-dd")} with happen in {remaining} days");
+                Console.WriteLine($"Event {e.Title} with date {e.Date:yyyy-MM-dd} with happen in {daysLeft} days");
             }
         }
     }
 
-    public static void DisplayEventStatistics(List<Event> listEvents)
+    public static void ShowStats(Dictionary<DateTime, int> stats)
     {
-        foreach (var item in listEvents.GroupBy(e => e.GetDate()))
+        foreach (var item in stats)
         {
-            Console.WriteLine($"Date: {item.Key.ToString("yyyy-MM-dd")}: events: {item.Count()}");
+            Console.WriteLine($"Date: {item.Key:yyyy-MM-dd}: events: {item.Value}");
+        }
+    }
+
+    public static void ShowStatsAlt(List<Event> listEvents)
+    {
+        foreach (var item in listEvents.GroupBy(e => e.Date))
+        {
+            Console.WriteLine($"Date: {item.Key:yyyy-MM-dd}: events: {item.Count()}");
         }
     }
 }
