@@ -10,6 +10,7 @@ namespace ConsoleEventPlanner
     {
         private string Title { get; set; }
         private DateTime Date { get; set; }
+
         public Event(string input)
         {
             string[] parts = input.Split(";");
@@ -20,10 +21,12 @@ namespace ConsoleEventPlanner
                 Date = DateTime.Parse(parts[2]);
             }
         }
+
         public string getTitle()
         {
             return Title;
         }
+
         public DateTime getDate()
         {
             return Date;
