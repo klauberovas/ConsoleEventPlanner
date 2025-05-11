@@ -1,4 +1,6 @@
-﻿namespace ConsoleEventPlanner;
+﻿using System.ComponentModel;
+
+namespace ConsoleEventPlanner;
 
 class Program
 {
@@ -6,9 +8,12 @@ class Program
     {
         List<Event> listEvents = new List<Event>(){
             new Event("EVENT;Birthday Party;2025-07-15"),
+            new Event("EVENT;Czechitas Party;2025-07-15"),
             new Event("EVENT;Conference;2025-06-01"),
             new Event("EVENT;Wedding;2025-09-10")
         };
+
+        Dictionary<DateTime, int> dictionaryStats = new Dictionary<DateTime, int>();
 
         while (true)
         {
@@ -40,10 +45,11 @@ class Program
                 switch (input.ToUpper())
                 {
                     case "LIST":
-                        showListEvents(listEvents);
+                        ShowListEvents(listEvents);
                         break;
 
                     case "STATS":
+                        DisplayEventStatistics(listEvents);
                         break;
 
                     case "END":
@@ -57,17 +63,25 @@ class Program
 
         }
     }
-    public static void showListEvents(List<Event> listEvents)
+    public static void ShowListEvents(List<Event> listEvents)
     {
         DateTime actualDate = DateTime.Now;
 
-        foreach (var e in listEvents.OrderBy(ev => ev.getDate()))
+        foreach (var e in listEvents.OrderBy(ev => ev.GetDate()))
         {
-            double remaining = (e.getDate() - actualDate).Days;
+            double remaining = (e.GetDate() - actualDate).Days;
             if (remaining >= 0)
             {
-                Console.WriteLine($"Event {e.getTitle()} with date {e.getDate().ToString("yyyy-MM-dd")} with happen in {remaining} days");
+                Console.WriteLine($"Event {e.GetTitle()} with date {e.GetDate().ToString("yyyy-MM-dd")} with happen in {remaining} days");
             }
+        }
+    }
+
+    public static void DisplayEventStatistics(List<Event> listEvents)
+    {
+        foreach (var item in listEvents.GroupBy(e => e.GetDate()))
+        {
+            Console.WriteLine($"Date: {item.Key.ToString("yyyy-MM-dd")}: events: {item.Count()}");
         }
     }
 }

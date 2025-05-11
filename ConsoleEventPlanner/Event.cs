@@ -29,12 +29,12 @@ namespace ConsoleEventPlanner
             Date = parsedDate;
         }
 
-        public string getTitle()
+        public string GetTitle()
         {
             return Title;
         }
 
-        public DateTime getDate()
+        public DateTime GetDate()
         {
             return Date;
         }
