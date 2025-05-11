@@ -13,11 +13,32 @@ class Program
             Console.WriteLine("  STATS  - shows event statistics by date");
             Console.WriteLine("  END    - exits the program");
             Console.WriteLine("===========================================");
-            string input = Console.ReadLine();
-            if (input.ToUpper() == "END")
+            string input = Console.ReadLine().Trim();
+            List<Event> listEvents = new List<Event>();
+
+
+            if (input.ToUpper().StartsWith("EVENT;"))
             {
-                return;
+                Event newEvent = new Event(input);
+                listEvents.Add(newEvent);
             }
+
+            switch (input.ToUpper())
+            {
+                case "LIST":
+                    break;
+
+                case "STATS":
+                    break;
+
+                case "END":
+                    return;
+
+                default:
+                    Console.WriteLine("Unknown command. Please try again.");
+                    break;
+            }
+
         }
     }
 }
