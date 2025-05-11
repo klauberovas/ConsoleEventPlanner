@@ -17,7 +17,7 @@ namespace ConsoleEventPlanner
 
             if (parts.Length == 3)
             {
-                Title = parts[1];
+                Title = parts[1].Trim();
                 Date = DateTime.Parse(parts[2]);
             }
         }

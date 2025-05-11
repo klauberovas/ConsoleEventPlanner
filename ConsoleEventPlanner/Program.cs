@@ -4,6 +4,12 @@ class Program
 {
     static void Main(string[] args)
     {
+        List<Event> listEvents = new List<Event>(){
+            new Event("EVENT;Birthday Party;2025-07-15"),
+            new Event("EVENT;Conference;2025-06-01"),
+            new Event("EVENT;Wedding;2025-09-10")
+        };
+
         while (true)
         {
             Console.WriteLine("============== EVENT PLANNER ===============");
@@ -14,31 +20,46 @@ class Program
             Console.WriteLine("  END    - exits the program");
             Console.WriteLine("===========================================");
             string input = Console.ReadLine().Trim();
-            List<Event> listEvents = new List<Event>();
-
 
             if (input.ToUpper().StartsWith("EVENT;"))
             {
                 Event newEvent = new Event(input);
                 listEvents.Add(newEvent);
+                Console.WriteLine("The event was added.");
             }
-
-            switch (input.ToUpper())
+            else
             {
-                case "LIST":
-                    break;
+                switch (input.ToUpper())
+                {
+                    case "LIST":
+                        showListEvents(listEvents);
+                        break;
 
-                case "STATS":
-                    break;
+                    case "STATS":
+                        break;
 
-                case "END":
-                    return;
+                    case "END":
+                        return;
 
-                default:
-                    Console.WriteLine("Unknown command. Please try again.");
-                    break;
+                    default:
+                        Console.WriteLine("Unknown command. Please try again.");
+                        break;
+                }
             }
 
+        }
+    }
+    public static void showListEvents(List<Event> listEvents)
+    {
+        DateTime actualDate = DateTime.Now;
+
+        foreach (var e in listEvents.OrderBy(ev => ev.getDate()))
+        {
+            double remaining = (e.getDate() - actualDate).Days;
+            if (remaining >= 0)
+            {
+                Console.WriteLine($"Event {e.getTitle()} with date {e.getDate().ToString("yyyy-MM-dd")} with happen in {remaining} days");
+            }
         }
     }
 }
