@@ -1,16 +1,14 @@
-﻿using System.ComponentModel;
-
-namespace ConsoleEventPlanner;
+﻿namespace ConsoleEventPlanner;
 
 class Program
 {
     static void Main(string[] args)
     {
         var events = new List<Event>(){
-            new Event("EVENT;Birthday Party;2025-07-15"),
-            new Event("EVENT;Czechitas Party;2025-07-15"),
-            new Event("EVENT;Conference;2025-06-01"),
-            new Event("EVENT;Wedding;2025-09-10")
+            new("EVENT;Birthday Party;2025-07-15"),
+            new("EVENT;Czechitas Party;2025-07-15"),
+            new("EVENT;Conference;2025-06-01"),
+            new("EVENT;Wedding;2025-09-10")
         };
 
         var stats = new Dictionary<DateTime, int>();
@@ -43,7 +41,6 @@ class Program
                 }
                 catch (ArgumentException ex)
                 {
-
                     Console.WriteLine($"Error: {ex.Message}");
                 }
             }
@@ -93,7 +90,7 @@ class Program
 
     public static void ShowStats(Dictionary<DateTime, int> stats)
     {
-        foreach (var item in stats)
+        foreach (var item in stats.OrderBy(ev => ev.Key))
         {
             Console.WriteLine($"Date: {item.Key:yyyy-MM-dd}: events: {item.Value}");
         }

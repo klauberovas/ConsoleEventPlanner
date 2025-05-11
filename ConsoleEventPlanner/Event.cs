@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace ConsoleEventPlanner
 {
     public class Event
@@ -16,7 +18,7 @@ namespace ConsoleEventPlanner
 
             Title = parts[1];
 
-            if (!DateTime.TryParse(parts[2], out DateTime parsedDate))
+            if (!DateTime.TryParseExact(parts[2], "yyyy-MM-dd", null, DateTimeStyles.None, out DateTime parsedDate))
             {
                 throw new ArgumentException("Invalid date format. Please use YYYY-MM-DD.");
             }
