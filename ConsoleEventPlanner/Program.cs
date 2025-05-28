@@ -35,8 +35,7 @@ class Program
                 try
                 {
                     Event newEvent = new Event(input);
-                    events.Add(newEvent);
-                    AddToStats(stats, newEvent);
+                    AddEvent(events, stats, newEvent);
                     Console.WriteLine("Event added.");
                 }
                 catch (ArgumentException ex)
@@ -68,6 +67,12 @@ class Program
         }
     }
 
+    private static void AddEvent(List<Event> events, Dictionary<DateTime, int> stats, Event newEvent)
+    {
+        events.Add(newEvent);
+        AddToStats(stats, newEvent);
+    }
+
     private static void AddToStats(Dictionary<DateTime, int> stats, Event ev)
     {
         var date = ev.Date;
@@ -84,6 +89,10 @@ class Program
             if (daysLeft >= 0)
             {
                 Console.WriteLine($"Event {e.Title} with date {e.Date:yyyy-MM-dd} with happen in {daysLeft} days");
+            }
+            else
+            {
+                Console.WriteLine($"Event {e.Title} with date {e.Date:yyyy-MM-dd} already happened {-daysLeft} days ago");
             }
         }
     }
